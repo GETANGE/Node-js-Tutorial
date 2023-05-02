@@ -18,7 +18,7 @@ const connect = mysql.createConnection({
 // link the connection to the database.
 connect.connect(function(err) {
   if (err) {
-    console.error('Error connecting to database: ' + err.stack);
+    console.error('Error connecting to database: ' + err);
     return;
   }
   console.log('Connected to database with id ' + connect.threadId);
@@ -33,7 +33,7 @@ app.post('/register', function(req, res) {
   const values = [[name, email, password]];
   connect.query(sql, [values], function(err, result) {
     if (err) {
-      console.error('Error loading to the database: ' + err.stack);
+      console.error('Error loading to the database: ' + err);
       res.status(500).send('An error occurred while processing your request.');
       return;
     }
