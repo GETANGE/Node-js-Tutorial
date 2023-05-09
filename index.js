@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // create a database connection and connect to the MySQL server.
-const connect = mysql.createConnection({
+const db = mysql.createConnection({
   host: 'localhost',
   user: 'Manu_dev@Database',
   password: 'ZAKI6971',
@@ -16,12 +16,12 @@ const connect = mysql.createConnection({
 });
 
 // link the connection to the database.
-connect.connect(function(err) {
+db.connect(function(err) {
   if (err) {
     console.error('Error connecting to database: ' + err);
     return;
   }
-  console.log('Connected to database with id ' + connect.threadId);
+  console.log('Connected to database with id ' + db.threadId);
 });
 
 // handle POST requests to /register
@@ -29,9 +29,9 @@ app.post('/register', function(req, res) {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
-  const sql = "INSERT INTO Customers (FullName, EmailAddress, Password) VALUES ?";
+  const sql = "INSERT INTO Customers (FullName, EmailAddress, Password) VALUES (?)";
   const values = [[name, email, password]];
-  connect.query(sql, [values], function(err, result) {
+  db.query(sql, [values], function(err, result) {
     if (err) {
       console.error('Error loading to the database: ' + err);
       res.status(500).send('An error occurred while processing your request.');
